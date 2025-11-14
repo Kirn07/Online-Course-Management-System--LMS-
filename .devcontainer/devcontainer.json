@@ -1,0 +1,23 @@
+{
+  "name": "Online-Course-Management-System--LMS- Codespace",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": "."
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-azuretools.vscode-docker",
+        "redhat.vscode-yaml",
+        "vscjava.vscode-java-pack",
+        "ms-vscode-remote.remote-containers"
+      ]
+    }
+  },
+  "postCreateCommand": "docker compose pull || true",
+  "forwardPorts": [8080],
+  "mounts": [
+    "source=${localWorkspaceFolder}/.git,target=/workspace,type=bind,consistency=cached"
+  ],
+  "remoteUser": "vscode"
+}

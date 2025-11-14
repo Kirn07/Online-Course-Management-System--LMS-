@@ -1,0 +1,42 @@
+version: "3.8"
+services:
+  db:
+    image: mysql:8.0
+    container_name: lms_db
+    environment:
+      MYSQL_ROOT_PASSWORD: Kir#n9833
+      MYSQL_DATABASE: lms
+      MYSQL_USER: root
+      MYSQL_PASSWORD: Kir#n9833
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      retries: 10
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: lms_backend
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_URL: jdbc:mysql://db:3306/lms?useSSL=false&serverTimezone=UTC
+      DB_USERNAME: lmsuser
+      DB_PASSWORD: lmspass
+      JWT_SECRET: demo_secret_for_codespace
+      JWT_EXPIRATION: 86400000
+      ADMIN_USERNAME: admin
+      ADMIN_PASSWORD: admin123
+      ADMIN_EMAIL: admin@example.com
+    ports:
+      - "8080:8080"
+    # restart: unless-stopped
+
+volumes:
+  db_data:

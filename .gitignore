@@ -1,0 +1,5 @@
+/.env
+/.devcontainer/devcontainer.local.env
+frontend/node_modules/
+backend/target/
+*.log
