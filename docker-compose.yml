@@ -6,8 +6,6 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: Kir#n9833
       MYSQL_DATABASE: lms
-      MYSQL_USER: root
-      MYSQL_PASSWORD: Kir#n9833
     ports:
       - "3306:3306"
     volumes:
@@ -21,14 +19,14 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: lms_backend
+    container_name: backend
     depends_on:
       db:
         condition: service_healthy
     environment:
       DB_URL: jdbc:mysql://db:3306/lms?useSSL=false&serverTimezone=UTC
-      DB_USERNAME: lmsuser
-      DB_PASSWORD: lmspass
+      DB_USERNAME: root
+      DB_PASSWORD: Kir#n9833
       JWT_SECRET: demo_secret_for_codespace
       JWT_EXPIRATION: 86400000
       ADMIN_USERNAME: admin
@@ -36,7 +34,6 @@ services:
       ADMIN_EMAIL: admin@example.com
     ports:
       - "8080:8080"
-    # restart: unless-stopped
 
 volumes:
   db_data:
