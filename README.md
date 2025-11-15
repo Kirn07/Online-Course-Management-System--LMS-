@@ -46,10 +46,8 @@ spring.datasource.password=yourpassword
 
 ---
 
-## 📡 Deployment URLs
-- **Frontend:** https://your-frontend-url  
-- **Backend:** https://your-backend-url  
-- **Single Combined Link (AlwaysData):** https://yourname.alwaysdata.net  
+## 📡 Deployment URL
+- **LMS:**https://online-course-management-system-lms-h5zh.onrender.com/"
 
 ---
 
