@@ -47,7 +47,7 @@ spring.datasource.password=yourpassword
 ---
 
 ## 📡 Deployment URL
-- **LMS:**https://online-course-management-system-lms-h5zh.onrender.com/"
+- **LMS:**"https://online-course-management-system-lms-h5zh.onrender.com/"
 
 ---
 
