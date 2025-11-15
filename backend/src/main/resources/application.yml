@@ -15,7 +15,7 @@ spring:
         format_sql: true
 
 server:
-  port: ${PORT:8080}
+  port: ${PORT:1000}
 
 app:
   jwtSecret: ${JWT_SECRET}
