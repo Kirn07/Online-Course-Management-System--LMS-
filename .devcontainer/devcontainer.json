@@ -2,7 +2,7 @@
   "name": "Online-Course-Management-System--LMS- Codespace",
   "build": {
     "dockerfile": "Dockerfile",
-    "context": "."
+    "context": ".."
   },
   "customizations": {
     "vscode": {
@@ -14,10 +14,7 @@
       ]
     }
   },
-  "postCreateCommand": "docker compose pull || true",
+  "postCreateCommand": "",
   "forwardPorts": [8080],
-  "mounts": [
-    "source=${localWorkspaceFolder}/.git,target=/workspace,type=bind,consistency=cached"
-  ],
   "remoteUser": "vscode"
 }
