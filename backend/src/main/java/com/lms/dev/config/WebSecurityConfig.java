@@ -47,33 +47,48 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
             .exceptionHandling(eh -> eh.authenticationEntryPoint(unauthorizedHandler))
             .sessionManagement(sm -> sm.sessionCreationPolicy(org.springframework.security.config.http.SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                    .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
-                    // ALLOW FRONTEND (React build)
-                    .requestMatchers("/", "/index.html", "/favicon.ico",
-                            "/static/**", "/css/**", "/js/**", "/images/**",
-                            "/fonts/**", "/manifest.json", "/assets/**").permitAll()
+        // Allow all frontend static files
+        .requestMatchers(
+                "/",
+                "/index.html",
+                "/favicon.ico",
+                "/manifest.json",
+                "/logo192.png",
+                "/logo512.png",
+                "/asset-manifest.json",
+                "/robots.txt",
+                "/sitemap.xml",
+                "/static/**",
+                "/css/**",
+                "/js/**",
+                "/media/**",
+                "/images/**",
+                "/assets/**"
+        ).permitAll()
 
-                    // Public API endpoints
-                    .requestMatchers("/api/auth/**").permitAll()
-                    .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+        // Public API
+        .requestMatchers("/api/auth/**").permitAll()
+        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
 
-                    // Courses
-                    .requestMatchers(HttpMethod.GET, "/api/courses/**").permitAll()
-                    .requestMatchers(HttpMethod.POST, "/api/courses/**").hasRole("ADMIN")
-                    .requestMatchers(HttpMethod.PUT, "/api/courses/**").hasRole("ADMIN")
-                    .requestMatchers(HttpMethod.DELETE, "/api/courses/**").hasRole("ADMIN")
+        // Courses
+        .requestMatchers(HttpMethod.GET, "/api/courses/**").permitAll()
+        .requestMatchers(HttpMethod.POST, "/api/courses/**").hasRole("ADMIN")
+        .requestMatchers(HttpMethod.PUT, "/api/courses/**").hasRole("ADMIN")
+        .requestMatchers(HttpMethod.DELETE, "/api/courses/**").hasRole("ADMIN")
 
-                    // Authenticated API endpoints
-                    .requestMatchers("/api/assessments/**").hasAnyRole("USER", "ADMIN")
-                    .requestMatchers("/api/enrollments/**").hasAnyRole("USER", "ADMIN")
-                    .requestMatchers("/api/feedbacks/**").hasAnyRole("USER", "ADMIN")
-                    .requestMatchers("/api/learning/**").hasAnyRole("USER", "ADMIN")
-                    .requestMatchers("/api/progress/**").hasAnyRole("USER", "ADMIN")
-                    .requestMatchers("/api/questions/**").hasAnyRole("USER", "ADMIN")
+        // Authenticated APIs
+        .requestMatchers("/api/assessments/**").hasAnyRole("USER", "ADMIN")
+        .requestMatchers("/api/enrollments/**").hasAnyRole("USER", "ADMIN")
+        .requestMatchers("/api/feedbacks/**").hasAnyRole("USER", "ADMIN")
+        .requestMatchers("/api/learning/**").hasAnyRole("USER", "ADMIN")
+        .requestMatchers("/api/progress/**").hasAnyRole("USER", "ADMIN")
+        .requestMatchers("/api/questions/**").hasAnyRole("USER", "ADMIN")
 
-                    .anyRequest().authenticated()
-            )
+        // Everything else requires auth
+        .anyRequest().authenticated()
+)
             .addFilterBefore(jwtAuthTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
     return http.build();
