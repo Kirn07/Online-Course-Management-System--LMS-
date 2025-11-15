@@ -1,6 +1,3 @@
-server:
-  port: ${PORT:8080}
-
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -17,17 +14,9 @@ spring:
         dialect: org.hibernate.dialect.MySQL8Dialect
         format_sql: true
 
-  mvc:
-    throw-exception-if-no-handler-found: true
+server:
+  port: ${PORT:8080}
 
-  web:
-    resources:
-      add-mappings: false
-
-
-# -----------------------------
-# APP CONFIG (OUTSIDE SPRING)
-# -----------------------------
 app:
   jwtSecret: ${JWT_SECRET}
   jwtExpirationMs: ${JWT_EXPIRATION:86400000}
