@@ -1,7 +1,6 @@
 package com.lms.dev.config;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+
 import com.lms.dev.security.jwt.JwtAuthTokenFilter;
 import com.lms.dev.security.jwt.JwtAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +19,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
