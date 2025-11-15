@@ -41,38 +41,43 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable())
-                .cors(cors -> {})
-                .exceptionHandling(eh -> eh.authenticationEntryPoint(unauthorizedHandler))
-                .sessionManagement(sm -> sm.sessionCreationPolicy(org.springframework.security.config.http.SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        // Public endpoints
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    http.csrf(csrf -> csrf.disable())
+            .cors(cors -> {})
+            .exceptionHandling(eh -> eh.authenticationEntryPoint(unauthorizedHandler))
+            .sessionManagement(sm -> sm.sessionCreationPolicy(org.springframework.security.config.http.SessionCreationPolicy.STATELESS))
+            .authorizeHttpRequests(auth -> auth
+                    .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
-                        // Courses
-                        .requestMatchers(HttpMethod.GET, "/api/courses/**").permitAll()
+                    // ALLOW FRONTEND (React build)
+                    .requestMatchers("/", "/index.html", "/favicon.ico",
+                            "/static/**", "/css/**", "/js/**", "/images/**",
+                            "/fonts/**", "/manifest.json", "/assets/**").permitAll()
 
-                        .requestMatchers(HttpMethod.POST, "/api/courses/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/api/courses/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/api/courses/**").hasRole("ADMIN")
+                    // Public API endpoints
+                    .requestMatchers("/api/auth/**").permitAll()
+                    .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
 
-                        // Assessments, Enrollments, Feedback, Learning, Progress
-                        .requestMatchers("/api/assessments/**").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers("/api/enrollments/**").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers("/api/feedbacks/**").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers("/api/learning/**").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers("/api/progress/**").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers("/api/questions/**").hasAnyRole("USER", "ADMIN")
+                    // Courses
+                    .requestMatchers(HttpMethod.GET, "/api/courses/**").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/courses/**").hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.PUT, "/api/courses/**").hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.DELETE, "/api/courses/**").hasRole("ADMIN")
 
-                        .anyRequest().authenticated()
-                )
-                .addFilterBefore(jwtAuthTokenFilter, UsernamePasswordAuthenticationFilter.class);
+                    // Authenticated API endpoints
+                    .requestMatchers("/api/assessments/**").hasAnyRole("USER", "ADMIN")
+                    .requestMatchers("/api/enrollments/**").hasAnyRole("USER", "ADMIN")
+                    .requestMatchers("/api/feedbacks/**").hasAnyRole("USER", "ADMIN")
+                    .requestMatchers("/api/learning/**").hasAnyRole("USER", "ADMIN")
+                    .requestMatchers("/api/progress/**").hasAnyRole("USER", "ADMIN")
+                    .requestMatchers("/api/questions/**").hasAnyRole("USER", "ADMIN")
 
-        return http.build();
-    }
+                    .anyRequest().authenticated()
+            )
+            .addFilterBefore(jwtAuthTokenFilter, UsernamePasswordAuthenticationFilter.class);
+
+    return http.build();
+}
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
